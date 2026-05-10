@@ -1,0 +1,687 @@
+Para o Artigo: Gemini e consensus(referencias);
+
+Atue como um pesquisador acadêmico, redator científico e especialista em Sistemas de Informação, Modelagem Epidemiológica, Matemática Aplicada e Desenvolvimento de Software.
+
+Seu objetivo é escrever um artigo científico completo, acadêmico e detalhado em português sobre o projeto:
+
+“Título: EpiRaws: Desenvolvimento de uma Plataforma Inteligente para Simulação Epidemiológica Baseada no Modelo SEIR”
+
+====================================================================
+INFORMAÇÕES ACADÊMICAS
+====================================================================
+
+Aluno:
+Arthur Ricardo da Silva
+
+Professor:
+Jones Alburqueque
+
+Instituição:
+Universidade Federal Rural de Pernambuco (UFRPE)
+
+Curso:
+Sistemas de Informação
+
+Disciplina:
+Sustentabilidade em Sistemas de Informação
+
+Ano:
+2026
+
+====================================================================
+OBJETIVO DO ARTIGO
+====================================================================
+
+O artigo deve apresentar:
+- o desenvolvimento da plataforma EpiRaws;
+- a modelagem matemática epidemiológica;
+- o modelo SEIR;
+- a arquitetura do sistema;
+- o desenvolvimento da API;
+- a sustentabilidade aplicada aos Sistemas de Informação;
+- a importância de tecnologias computacionais para apoio epidemiológico.
+
+====================================================================
+TIPO DE ARTIGO
+====================================================================
+
+O artigo deve seguir o estilo de:
+- pesquisa aplicada;
+- desenvolvimento de software científico;
+- modelagem computacional.
+
+====================================================================
+FOCO DO ARTIGO
+====================================================================
+
+O foco principal deve ser:
+- acadêmico;
+- matemático;
+- tecnológico;
+- científico.
+
+O texto deve:
+- soar profissional;
+- possuir linguagem acadêmica;
+- utilizar terminologia científica;
+- apresentar explicações matemáticas claras;
+- explicar conceitos epidemiológicos;
+- explicar arquitetura de software.
+
+====================================================================
+TECNOLOGIAS DO PROJETO
+====================================================================
+
+O artigo deve considerar que o sistema foi desenvolvido utilizando:
+
+Backend:
+- Python
+- FastAPI
+- Pydantic
+- Uvicorn
+
+Frontend:
+- HTML5
+- CSS3
+- JavaScript
+
+Visualização:
+- Chart.js
+
+Arquitetura:
+- API REST
+- separação frontend/backend
+- validação de dados
+- arquitetura modular
+
+====================================================================
+MODELO EPIDEMIOLÓGICO
+====================================================================
+
+Explique detalhadamente o modelo SEIR:
+
+- Suscetíveis (S)
+- Expostos (E)
+- Infectados (I)
+- Recuperados (R)
+
+Apresente e explique matematicamente as equações:
+
+dS/dt = -β(SI/N)
+
+dE/dt = β(SI/N) - σE
+
+dI/dt = σE - γI
+
+dR/dt = γI
+
+Explique:
+- taxa de transmissão;
+- taxa de recuperação;
+- taxa de incubação;
+- crescimento epidemiológico;
+- interpretação das curvas;
+- importância da modelagem matemática.
+
+====================================================================
+MÉTODO NUMÉRICO
+====================================================================
+
+Explique o Método de Euler utilizado na simulação:
+
+X(t+1) = X(t) + Δt × f(X(t))
+
+Explique:
+- aproximação numérica;
+- simulação temporal;
+- cálculo computacional;
+- projeções epidemiológicas.
+
+====================================================================
+SUSTENTABILIDADE EM SISTEMAS DE INFORMAÇÃO
+====================================================================
+
+Relacione o projeto com:
+- sustentabilidade tecnológica;
+- prevenção epidemiológica;
+- apoio à saúde pública;
+- análise de dados;
+- uso inteligente da informação;
+- sistemas computacionais para tomada de decisão.
+
+====================================================================
+ESTRUTURA OBRIGATÓRIA
+====================================================================
+
+O artigo deve conter:
+
+1. Título
+2. Resumo
+3. Palavras-chave
+4. Introdução
+5. Fundamentação Teórica
+6. Modelagem Matemática
+7. Arquitetura do Sistema
+8. Desenvolvimento da Plataforma
+9. Resultados e Discussão
+10. Sustentabilidade em Sistemas de Informação
+11. Considerações Finais
+12. Referências
+
+====================================================================
+ELEMENTOS VISUAIS
+====================================================================
+
+Inclua sugestões de:
+- diagramas;
+- fluxogramas;
+- tabelas;
+- gráficos epidemiológicos;
+- diagramas da arquitetura do sistema;
+- representação das curvas SEIR.
+
+====================================================================
+REQUISITOS ACADÊMICOS
+====================================================================
+
+- utilizar linguagem acadêmica formal;
+- manter coerência científica;
+- explicar conceitos matemáticos;
+- explicar conceitos computacionais;
+- evitar linguagem informal;
+- criar conteúdo original;
+- manter estrutura universitária;
+- apresentar conclusões realistas.
+
+====================================================================
+REFERÊNCIAS
+====================================================================
+
+Gerar referências acadêmicas relacionadas a:
+- epidemiologia;
+- modelos SIR e SEIR;
+- modelagem matemática;
+- FastAPI;
+- sistemas de informação;
+- sustentabilidade tecnológica;
+- simulações computacionais.
+
+====================================================================
+FORMATAÇÃO
+====================================================================
+
+- artigo em português;
+- estilo acadêmico universitário;
+- texto detalhado;
+- estrutura organizada;
+- pronto para adaptação em ABNT.
+
+====================================================================
+REGRAS IMPORTANTES
+====================================================================
+
+- não gerar texto superficial;
+- aprofundar matemática e tecnologia;
+- explicar o funcionamento do sistema;
+- explicar a importância científica da plataforma;
+- escrever como um artigo científico real;
+- gerar conteúdo completo e bem desenvolvido.
+
+Se o artigo ficar muito longo:
+1. entregue primeiro até a Fundamentação Teórica;
+2. depois continue nas próximas respostas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Para o desenvolvimento do site: Claude Code
+
+Atue como um Desenvolvedor Full-Stack Sênior especializado em:
+
+- Engenharia de Software;
+- Arquitetura de Sistemas;
+- APIs modernas;
+- Segurança de aplicações;
+- Modelagem Epidemiológica;
+- Simulações Matemáticas;
+- Visualização de Dados Científicos.
+
+Seu objetivo é criar o código completo de uma plataforma web profissional chamada:
+
+# “EpiRaws — Calculadora Epidemiológica Inteligente”
+
+A plataforma deverá ser moderna, responsiva, segura, matematicamente consistente e baseada em modelos epidemiológicos reais.
+
+====================================================================
+TECNOLOGIAS OBRIGATÓRIAS
+====================================================================
+
+BACKEND
+- Python
+- FastAPI
+- Uvicorn
+- Pydantic
+
+FRONTEND
+- HTML5
+- CSS3
+- JavaScript puro
+
+VISUALIZAÇÃO
+- Chart.js
+
+====================================================================
+OBJETIVO DA PLATAFORMA
+====================================================================
+
+A plataforma “EpiRaws” deverá:
+
+1. Calcular o risco individual de infecção;
+2. Simular a propagação epidemiológica usando o modelo SEIR;
+3. Projetar a evolução da doença pelos próximos 30 dias;
+4. Gerar gráficos epidemiológicos em tempo real;
+5. Explicar matematicamente os resultados ao usuário.
+
+====================================================================
+ARQUITETURA PROFISSIONAL OBRIGATÓRIA
+====================================================================
+
+A aplicação deve possuir frontend e backend completamente separados.
+
+Estrutura obrigatória:
+
+backend/
+│
+├── app.py
+├── routes/
+│   └── risk_routes.py
+├── services/
+│   ├── risk_engine.py
+│   └── seir_model.py
+├── schemas/
+│   └── request_models.py
+├── utils/
+├── requirements.txt
+└── README.md
+
+frontend/
+│
+├── index.html
+├── style.css
+└── script.js
+
+====================================================================
+1. MOTOR DE RISCO INDIVIDUAL (HEURÍSTICO)
+====================================================================
+
+Crie um motor heurístico inteligente responsável por calcular a probabilidade percentual de infecção entre 0% e 100%.
+
+====================================================================
+LÓGICA MATEMÁTICA DO RISCO
+====================================================================
+
+O cálculo deve utilizar uma soma ponderada baseada em pesos.
+
+Fórmula obrigatória:
+
+Risk Score =
+(contact_weight × contacts)
++ (temperature_weight × fever)
++ (symptom_weight × symptoms)
++ (mask_weight × mask_factor)
++ (vaccination_weight × vaccination_factor)
++ (exposure_weight × exposure_days)
++ (infected_weight × nearby_infected)
+
+Após o cálculo:
+- normalize o resultado;
+- limite entre 0 e 100%;
+- impeça valores negativos.
+
+====================================================================
+VARIÁVEIS ANALISADAS
+====================================================================
+
+- quantidade de contatos recentes;
+- dias desde possível exposição;
+- temperatura corporal;
+- presença de sintomas;
+- uso de máscara;
+- vacinação;
+- quantidade de infectados próximos.
+
+====================================================================
+REGRAS DO MOTOR HEURÍSTICO
+====================================================================
+
+- febre alta aumenta drasticamente o risco;
+- sintomas aumentam fortemente o risco;
+- não usar máscara aumenta o risco;
+- vacinação reduz o risco;
+- exposição recente aumenta o risco;
+- grande número de contatos aumenta o risco.
+
+====================================================================
+CLASSIFICAÇÃO DE RISCO
+====================================================================
+
+- 0–33% → Baixo Risco
+- 34–66% → Médio Risco
+- 67–100% → Alto Risco
+
+====================================================================
+RESPOSTA DO BACKEND
+====================================================================
+
+Retorne:
+- porcentagem de risco;
+- classificação textual;
+- mensagem preventiva personalizada.
+
+====================================================================
+2. MOTOR EPIDEMIOLÓGICO (MODELO SEIR)
+====================================================================
+
+Implemente um simulador epidemiológico completo baseado no modelo matemático SEIR.
+
+====================================================================
+DIVISÕES DA POPULAÇÃO
+====================================================================
+
+- S → Suscetíveis
+- E → Expostos
+- I → Infectados
+- R → Recuperados
+
+====================================================================
+EQUAÇÕES DIFERENCIAIS OBRIGATÓRIAS
+====================================================================
+
+dS/dt = -β(SI/N)
+
+dE/dt = β(SI/N) - σE
+
+dI/dt = σE - γI
+
+dR/dt = γI
+
+Onde:
+- β = taxa de transmissão;
+- γ = taxa de recuperação;
+- σ = taxa de incubação;
+- N = população total.
+
+====================================================================
+MÉTODO NUMÉRICO
+====================================================================
+
+Resolva as equações usando o Método de Euler.
+
+Fórmula obrigatória:
+
+X(t+1) = X(t) + Δt × f(X(t))
+
+O sistema deve:
+- simular 30 dias;
+- gerar arrays completos;
+- impedir valores negativos;
+- impedir crescimento inválido;
+- impedir divisão por zero;
+- validar entradas matemáticas.
+
+====================================================================
+VALIDAÇÕES MATEMÁTICAS OBRIGATÓRIAS
+====================================================================
+
+Valide:
+- population > 0
+- infected <= population
+- exposed <= population
+- beta > 0
+- gamma > 0
+- sigma > 0
+
+====================================================================
+REQUISITOS DE SEGURANÇA
+====================================================================
+
+Implemente:
+- validação com Pydantic;
+- tratamento global de exceções;
+- sanitização de entradas;
+- respostas padronizadas;
+- proteção contra entradas inválidas;
+- proteção contra overflow numérico;
+- CORS configurado corretamente.
+
+NÃO UTILIZE:
+- allow_origins=["*"];
+- cálculos críticos no frontend;
+- lógica matemática sensível no JavaScript.
+
+====================================================================
+REQUISITOS DO FRONTEND
+====================================================================
+
+Crie uma interface:
+- moderna;
+- científica;
+- futurista;
+- limpa;
+- profissional;
+- responsiva;
+- com animações suaves em CSS puro.
+
+====================================================================
+IDENTIDADE VISUAL
+====================================================================
+
+A interface do “EpiRaws” deve transmitir:
+- ciência;
+- tecnologia;
+- inteligência analítica;
+- epidemiologia;
+- visual moderno de laboratório/dados.
+
+====================================================================
+FORMULÁRIO
+====================================================================
+
+DADOS INDIVIDUAIS
+- contatos recentes;
+- dias desde exposição;
+- temperatura corporal;
+- sintomas (sim/não);
+- uso de máscara (sim/não);
+- vacinação (sim/não).
+
+DADOS COMUNITÁRIOS
+- população total;
+- quantidade inicial de expostos;
+- quantidade inicial de infectados;
+- taxa de transmissão (β);
+- taxa de recuperação (γ);
+- taxa de incubação (σ).
+
+====================================================================
+ÁREA DE RESULTADOS
+====================================================================
+
+Exiba:
+- porcentagem de risco;
+- classificação;
+- mensagens preventivas;
+- estatísticas epidemiológicas;
+- interpretação dos dados;
+- projeção populacional;
+- gráfico SEIR completo.
+
+====================================================================
+EXPLICAÇÕES MATEMÁTICAS
+====================================================================
+
+Explique:
+- significado de β;
+- significado de γ;
+- significado de σ;
+- funcionamento do Método de Euler;
+- interpretação das curvas:
+  - Suscetíveis;
+  - Expostos;
+  - Infectados;
+  - Recuperados.
+
+====================================================================
+GRÁFICOS
+====================================================================
+
+Utilize Chart.js.
+
+Renderize:
+- curva S;
+- curva E;
+- curva I;
+- curva R.
+
+O gráfico deve:
+- atualizar dinamicamente;
+- possuir legendas;
+- possuir animações suaves;
+- ser responsivo;
+- possuir design moderno.
+
+====================================================================
+UX/UI
+====================================================================
+
+Implemente:
+- animações suaves;
+- feedback visual;
+- indicador de carregamento;
+- mensagens de erro amigáveis;
+- transições elegantes.
+
+====================================================================
+API REST
+====================================================================
+
+Crie:
+
+POST /calculate_risk
+
+====================================================================
+EXEMPLO DE REQUEST
+====================================================================
+
+{
+  "contacts": 10,
+  "days_exposed": 3,
+  "temperature": 38.2,
+  "symptoms": true,
+  "mask": false,
+  "vaccinated": false,
+  "population": 10000,
+  "infected": 20,
+  "exposed": 15,
+  "beta": 0.35,
+  "gamma": 0.12,
+  "sigma": 0.20
+}
+
+====================================================================
+EXEMPLO DE RESPONSE
+====================================================================
+
+{
+  "risk_percentage": 82,
+  "risk_level": "Alto Risco",
+  "message": "Procure atendimento médico e evite contato social.",
+  "projection": {
+    "susceptible": [],
+    "exposed": [],
+    "infected": [],
+    "recovered": []
+  }
+}
+
+====================================================================
+DOCUMENTAÇÃO E COMENTÁRIOS
+====================================================================
+
+- explique a matemática utilizada;
+- explique as fórmulas;
+- adicione comentários detalhados;
+- utilize boas práticas;
+- mantenha código limpo;
+- mantenha separação de responsabilidades.
+
+====================================================================
+REGRAS IMPORTANTES
+====================================================================
+
+- forneça código completo;
+- não utilize pseudocódigo;
+- não omita partes importantes;
+- mantenha consistência matemática;
+- mantenha segurança da API;
+- entregue código funcional e pronto para execução.
+
+====================================================================
+ESTRUTURA DE ENTREGA
+====================================================================
+
+Entregue separadamente:
+
+1. Backend
+2. Frontend
+3. Explicação matemática
+
+====================================================================
+ORDEM DE ENTREGA
+====================================================================
+
+1. Primeiro entregue:
+- app.py
+- routes/
+- services/
+- schemas/
+- requirements.txt
+
+2. Depois aguarde eu pedir:
+- index.html
+- style.css
+- script.js
+
+3. Depois explique:
+- modelo SEIR;
+- cálculo heurístico;
+- Método de Euler;
+- interpretação epidemiológica.
+
+
+Ias utilizadas: chatgpt e gemini para Elaborar os prompts. consensus para referências
+Claude Code para Desenvolvimento da plataforma
+Gemini para elaborar o artigo.
+
+
+
+
+
+
+ 
+
+
+
+
