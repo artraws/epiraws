@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EpiRaws — Calculadora Epidemiológica Inteligente</title>
+  <meta name="description" content="Plataforma epidemiológica baseada no modelo SEIR com cálculo heurístico de risco individual." />
+
+  <!-- Fontes: Share Tech Mono (terminal) + Barlow Condensed (títulos) + DM Sans (corpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SCANLINE OVERLAY -->
+  <div class="scanlines" aria-hidden="true"></div>
+  <!-- GRID BACKGROUND -->
+  <div class="grid-bg" aria-hidden="true"></div>
+  <!-- AMBIENT GLOW -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo-block">
+        <div class="logo-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <circle cx="24" cy="24" r="4" fill="currentColor"/>
+            <line x1="24" y1="4"  x2="24" y2="12" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="24" y1="36" x2="24" y2="44" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="4"  y1="24" x2="12" y2="24" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="36" y1="24" x2="44" y2="24" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="24" cy="4"  r="2" fill="currentColor"/>
+            <circle cx="24" cy="44" r="2" fill="currentColor"/>
+            <circle cx="4"  cy="24" r="2" fill="currentColor"/>
+            <circle cx="44" cy="24" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <span class="logo-name">EpiRaws</span>
+          <span class="logo-tagline">Calculadora Epidemiológica Inteligente</span>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span class="status-dot"></span>
+        <span class="status-label">SISTEMA ATIVO</span>
+        <span class="header-version">v1.0.0</span>
+      </div>
+    </div>
+    <div class="header-line"></div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       MAIN LAYOUT
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <main class="main-layout">
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         COLUNA ESQUERDA — FORMULÁRIO
+    ───────────────────────────────────────────────────────────────────── -->
+    <aside class="form-panel">
+
+      <!-- Indicador de seção -->
+      <div class="panel-label">
+        <span class="panel-label-line"></span>
+        <span class="panel-label-text">ENTRADA DE DADOS</span>
+        <span class="panel-label-line"></span>
+      </div>
+
+      <form id="epiForm" novalidate autocomplete="off">
+
+        <!-- ── SEÇÃO 1: DADOS INDIVIDUAIS ── -->
+        <fieldset class="form-section" id="section-individual">
+          <legend class="section-legend">
+            <span class="legend-icon">◈</span>
+            Dados Individuais
+          </legend>
+
+          <!-- Contatos recentes -->
+          <div class="field-group">
+            <label class="field-label" for="contacts">
+              Contatos Recentes
+              <span class="field-unit">pessoas</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="contacts" name="contacts"
+                min="0" max="10000" step="1" value="5"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+            <p class="field-hint">Pessoas com quem teve contato próximo nos últimos 14 dias.</p>
+          </div>
+
+          <!-- Dias desde exposição -->
+          <div class="field-group">
+            <label class="field-label" for="days_exposed">
+              Dias desde Exposição
+              <span class="field-unit">dias</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="days_exposed" name="days_exposed"
+                min="0" max="60" step="1" value="2"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+            <p class="field-hint">0 = sem exposição conhecida.</p>
+          </div>
+
+          <!-- Temperatura -->
+          <div class="field-group">
+            <label class="field-label" for="temperature">
+              Temperatura Corporal
+              <span class="field-unit">°C</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="temperature" name="temperature"
+                min="34" max="43" step="0.1" value="36.5"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+            <div class="temp-indicator" id="tempIndicator">
+              <span class="temp-bar-fill" id="tempBarFill"></span>
+              <span class="temp-status" id="tempStatus">Normal</span>
+            </div>
+          </div>
+
+          <!-- Sintomas -->
+          <div class="field-group">
+            <label class="field-label">Sintomas Respiratórios</label>
+            <div class="toggle-group">
+              <label class="toggle-opt">
+                <input type="radio" name="symptoms" value="true" />
+                <span class="toggle-btn toggle-yes">Sim</span>
+              </label>
+              <label class="toggle-opt">
+                <input type="radio" name="symptoms" value="false" checked />
+                <span class="toggle-btn toggle-no">Não</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Máscara -->
+          <div class="field-group">
+            <label class="field-label">Uso de Máscara</label>
+            <div class="toggle-group">
+              <label class="toggle-opt">
+                <input type="radio" name="mask" value="true" checked />
+                <span class="toggle-btn toggle-yes">Sim</span>
+              </label>
+              <label class="toggle-opt">
+                <input type="radio" name="mask" value="false" />
+                <span class="toggle-btn toggle-no">Não</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Vacinação -->
+          <div class="field-group">
+            <label class="field-label">Vacinação</label>
+            <div class="toggle-group">
+              <label class="toggle-opt">
+                <input type="radio" name="vaccinated" value="true" checked />
+                <span class="toggle-btn toggle-yes">Sim</span>
+              </label>
+              <label class="toggle-opt">
+                <input type="radio" name="vaccinated" value="false" />
+                <span class="toggle-btn toggle-no">Não</span>
+              </label>
+            </div>
+          </div>
+
+        </fieldset>
+
+        <!-- ── SEÇÃO 2: DADOS COMUNITÁRIOS ── -->
+        <fieldset class="form-section" id="section-community">
+          <legend class="section-legend">
+            <span class="legend-icon">◈</span>
+            Dados Comunitários
+          </legend>
+
+          <!-- População -->
+          <div class="field-group">
+            <label class="field-label" for="population">
+              População Total
+              <span class="field-unit">N</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="population" name="population"
+                min="1" max="10000000000" step="1" value="100000"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+          </div>
+
+          <!-- Expostos iniciais -->
+          <div class="field-group">
+            <label class="field-label" for="exposed">
+              Expostos Iniciais
+              <span class="field-unit">E₀</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="exposed" name="exposed"
+                min="0" max="10000000000" step="1" value="50"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+          </div>
+
+          <!-- Infectados iniciais -->
+          <div class="field-group">
+            <label class="field-label" for="infected">
+              Infectados Iniciais
+              <span class="field-unit">I₀</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="infected" name="infected"
+                min="0" max="10000000000" step="1" value="20"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+          </div>
+
+          <!-- Beta -->
+          <div class="field-group">
+            <label class="field-label" for="beta">
+              Taxa de Transmissão
+              <span class="field-unit">β (beta)</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="beta" name="beta"
+                min="0.001" max="10" step="0.01" value="0.35"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+            <p class="field-hint">Contatos infecciosos por infectado/dia. R₀ = β / γ</p>
+          </div>
+
+          <!-- Gamma -->
+          <div class="field-group">
+            <label class="field-label" for="gamma">
+              Taxa de Recuperação
+              <span class="field-unit">γ (gamma)</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="gamma" name="gamma"
+                min="0.001" max="1" step="0.001" value="0.12"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+            <p class="field-hint">Período infeccioso ≈ 1/γ dias.</p>
+          </div>
+
+          <!-- Sigma -->
+          <div class="field-group">
+            <label class="field-label" for="sigma">
+              Taxa de Incubação
+              <span class="field-unit">σ (sigma)</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                type="number" id="sigma" name="sigma"
+                min="0.001" max="1" step="0.001" value="0.20"
+                class="field-input" required
+              />
+              <span class="input-bar"></span>
+            </div>
+            <p class="field-hint">Período de incubação ≈ 1/σ dias.</p>
+          </div>
+
+        </fieldset>
+
+        <!-- BOTÃO DE ENVIO -->
+        <button type="submit" class="btn-calculate" id="btnCalculate">
+          <span class="btn-icon" aria-hidden="true">▶</span>
+          <span class="btn-label">Executar Análise</span>
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+
+      </form>
+    </aside>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         COLUNA DIREITA — RESULTADOS
+    ───────────────────────────────────────────────────────────────────── -->
+    <section class="results-panel" id="resultsPanel">
+
+      <!-- ESTADO VAZIO -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="40" cy="40" r="35" stroke="currentColor" stroke-width="1" stroke-dasharray="6 4"/>
+            <circle cx="40" cy="40" r="20" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+            <circle cx="40" cy="40" r="6"  fill="currentColor" opacity="0.3"/>
+            <path d="M40 5 L40 15 M40 65 L40 75 M5 40 L15 40 M65 40 L75 40" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <p class="empty-title">Aguardando Parâmetros</p>
+        <p class="empty-sub">Preencha o formulário e execute a análise para visualizar os resultados epidemiológicos.</p>
+      </div>
+
+      <!-- LOADING -->
+      <div class="loading-state" id="loadingState" hidden>
+        <div class="loading-scanner">
+          <div class="scanner-ring scanner-ring-1"></div>
+          <div class="scanner-ring scanner-ring-2"></div>
+          <div class="scanner-ring scanner-ring-3"></div>
+          <div class="scanner-core"></div>
+        </div>
+        <p class="loading-text" id="loadingText">Inicializando motor SEIR...</p>
+        <div class="loading-steps">
+          <span class="load-step" id="ls1">✓ Validando parâmetros</span>
+          <span class="load-step" id="ls2">⟳ Calculando risco individual</span>
+          <span class="load-step" id="ls3">— Simulando propagação (30 dias)</span>
+          <span class="load-step" id="ls4">— Gerando projeção</span>
+        </div>
+      </div>
+
+      <!-- ERRO -->
+      <div class="error-state" id="errorState" hidden>
+        <div class="error-icon" aria-hidden="true">!</div>
+        <p class="error-title">ERRO DE ANÁLISE</p>
+        <p class="error-message" id="errorMessage">Erro desconhecido.</p>
+        <button class="btn-retry" onclick="document.getElementById('errorState').hidden=true; document.getElementById('emptyState').hidden=false;">
+          ↺ Tentar novamente
+        </button>
+      </div>
+
+      <!-- RESULTADOS (inicialmente oculto) -->
+      <div class="results-content" id="resultsContent" hidden>
+
+        <!-- ── RISCO INDIVIDUAL ── -->
+        <div class="result-block risk-block" id="riskBlock">
+          <div class="block-header">
+            <span class="block-tag">RISCO INDIVIDUAL</span>
+            <span class="block-line"></span>
+          </div>
+
+          <div class="risk-display">
+            <!-- Medidor circular -->
+            <div class="risk-gauge-wrapper">
+              <div class="risk-gauge" id="riskGauge">
+                <svg class="gauge-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Trilha de fundo -->
+                  <circle class="gauge-track" cx="100" cy="100" r="80"
+                    fill="none" stroke-width="12"
+                    stroke-dasharray="502.65" stroke-dashoffset="125.66"
+                    transform="rotate(135 100 100)"/>
+                  <!-- Arco de progresso -->
+                  <circle class="gauge-fill" id="gaugeFill" cx="100" cy="100" r="80"
+                    fill="none" stroke-width="12"
+                    stroke-dasharray="502.65" stroke-dashoffset="502.65"
+                    transform="rotate(135 100 100)"/>
+                  <!-- Valor central -->
+                  <text class="gauge-pct" id="gaugePct" x="100" y="95" text-anchor="middle" dy=".3em">--</text>
+                  <text class="gauge-label-svg" x="100" y="125" text-anchor="middle">risco</text>
+                </svg>
+              </div>
+            </div>
+
+            <div class="risk-info">
+              <div class="risk-level-badge" id="riskLevelBadge">—</div>
+              <p class="risk-message" id="riskMessage">Execute a análise para obter resultados.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ESTATÍSTICAS SEIR ── -->
+        <div class="result-block stats-block">
+          <div class="block-header">
+            <span class="block-tag">PROJEÇÃO SEIR — DIA 30</span>
+            <span class="block-line"></span>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card stat-s">
+              <span class="stat-letter">S</span>
+              <span class="stat-name">Suscetíveis</span>
+              <span class="stat-value" id="statS">—</span>
+            </div>
+            <div class="stat-card stat-e">
+              <span class="stat-letter">E</span>
+              <span class="stat-name">Expostos</span>
+              <span class="stat-value" id="statE">—</span>
+            </div>
+            <div class="stat-card stat-i">
+              <span class="stat-letter">I</span>
+              <span class="stat-name">Infectados</span>
+              <span class="stat-value" id="statI">—</span>
+            </div>
+            <div class="stat-card stat-r">
+              <span class="stat-letter">R</span>
+              <span class="stat-name">Recuperados</span>
+              <span class="stat-value" id="statR">—</span>
+            </div>
+          </div>
+          <div class="meta-stats">
+            <div class="meta-item">
+              <span class="meta-key">R₀ (Repr. Básico)</span>
+              <span class="meta-val" id="metaR0">—</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-key">Pico de Infectados</span>
+              <span class="meta-val" id="metaPeak">—</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-key">Dia do Pico</span>
+              <span class="meta-val" id="metaPeakDay">—</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-key">Período Infeccioso</span>
+              <span class="meta-val" id="metaInfPeriod">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── GRÁFICO SEIR ── -->
+        <div class="result-block chart-block">
+          <div class="block-header">
+            <span class="block-tag">CURVAS EPIDEMIOLÓGICAS — 30 DIAS</span>
+            <span class="block-line"></span>
+          </div>
+          <div class="chart-container">
+            <canvas id="seirChart"></canvas>
+          </div>
+          <div class="chart-legend-custom">
+            <span class="legend-item legend-s"><span class="legend-dot"></span>Suscetíveis</span>
+            <span class="legend-item legend-e"><span class="legend-dot"></span>Expostos</span>
+            <span class="legend-item legend-i"><span class="legend-dot"></span>Infectados</span>
+            <span class="legend-item legend-r"><span class="legend-dot"></span>Recuperados</span>
+          </div>
+        </div>
+
+        <!-- ── EXPLICAÇÕES MATEMÁTICAS ── -->
+        <div class="result-block math-block">
+          <div class="block-header collapsible-header" id="mathToggle" role="button" tabindex="0" aria-expanded="false">
+            <span class="block-tag">FUNDAMENTAÇÃO MATEMÁTICA</span>
+            <span class="block-line"></span>
+            <span class="collapse-icon" aria-hidden="true">▼</span>
+          </div>
+          <div class="math-content" id="mathContent" hidden>
+
+            <div class="math-section">
+              <h3 class="math-title">Modelo SEIR</h3>
+              <p class="math-text">
+                O modelo SEIR divide a população N em quatro compartimentos. A transição entre eles é
+                governada por um sistema de equações diferenciais ordinárias (EDOs):
+              </p>
+              <div class="equation-block">
+                <div class="equation">dS/dt = −β · S · I / N</div>
+                <div class="equation">dE/dt = β · S · I / N − σ · E</div>
+                <div class="equation">dI/dt = σ · E − γ · I</div>
+                <div class="equation">dR/dt = γ · I</div>
+              </div>
+            </div>
+
+            <div class="math-section">
+              <h3 class="math-title">Parâmetros</h3>
+              <div class="param-table">
+                <div class="param-row">
+                  <span class="param-sym">β</span>
+                  <span class="param-name">Taxa de transmissão</span>
+                  <span class="param-desc">Número médio de contatos infecciosos por infectado por dia. Quanto maior β, mais rápida a disseminação.</span>
+                </div>
+                <div class="param-row">
+                  <span class="param-sym">γ</span>
+                  <span class="param-name">Taxa de recuperação</span>
+                  <span class="param-desc">Fração dos infectados que se recuperam por dia. Período infeccioso médio = 1/γ dias.</span>
+                </div>
+                <div class="param-row">
+                  <span class="param-sym">σ</span>
+                  <span class="param-name">Taxa de incubação</span>
+                  <span class="param-desc">Fração dos expostos que se tornam infecciosos por dia. Período de incubação médio = 1/σ dias.</span>
+                </div>
+                <div class="param-row">
+                  <span class="param-sym">R₀</span>
+                  <span class="param-name">Número de reprodução básico</span>
+                  <span class="param-desc">R₀ = β/γ. Se R₀ &gt; 1, a epidemia cresce. Se R₀ &lt; 1, ela declina.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="math-section">
+              <h3 class="math-title">Método de Euler</h3>
+              <p class="math-text">
+                As EDOs são resolvidas numericamente com o Método de Euler Explícito
+                (passo Δt = 1 dia). Para cada compartimento X no instante t:
+              </p>
+              <div class="equation-block">
+                <div class="equation">X(t + Δt) = X(t) + Δt · dX/dt(t)</div>
+              </div>
+              <p class="math-text">
+                A cada passo, os compartimentos são fixados em ≥ 0 (clamp) e
+                re-normalizados para preservar S + E + I + R = N.
+              </p>
+            </div>
+
+            <div class="math-section">
+              <h3 class="math-title">Motor Heurístico de Risco</h3>
+              <p class="math-text">
+                O risco individual é calculado por soma ponderada normalizada:
+              </p>
+              <div class="equation-block">
+                <div class="equation">score = Σ (wᵢ × fᵢ)</div>
+                <div class="equation">risco% = clamp(score / score_máx × 100, 0, 100)</div>
+              </div>
+              <p class="math-text">
+                Vacinação reduz o escore bruto em 35%. Temperatura usa escalas por limiar clínico
+                (37.5 / 38.5 / 39.5 °C). Contatos crescem em raiz quadrada para modelar
+                retorno decrescente de risco marginal.
+              </p>
+            </div>
+
+            <div class="math-section">
+              <h3 class="math-title">Interpretação das Curvas</h3>
+              <div class="curve-interpretations">
+                <div class="curve-item curve-s">
+                  <span class="curve-letter">S</span>
+                  <p>Declina à medida que suscetíveis são expostos. A velocidade de queda reflete a força de infecção (λ = β·I/N).</p>
+                </div>
+                <div class="curve-item curve-e">
+                  <span class="curve-letter">E</span>
+                  <p>Sobe antes de I — indivíduos expostos mas ainda não infecciosos. Largura do pico ≈ 1/σ dias.</p>
+                </div>
+                <div class="curve-item curve-i">
+                  <span class="curve-letter">I</span>
+                  <p>O pico de I é o momento crítico. Seu valor máximo determina a pressão sobre sistemas de saúde.</p>
+                </div>
+                <div class="curve-item curve-r">
+                  <span class="curve-letter">R</span>
+                  <p>Cresce monotonicamente. Ao final, R(30) + I(30) ≈ total de infectados ao longo do período.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- fim resultados -->
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <span>EpiRaws © 2025</span>
+    <span class="footer-sep">·</span>
+    <span>Modelo SEIR + Motor Heurístico</span>
+    <span class="footer-sep">·</span>
+    <span>FastAPI + Chart.js</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
